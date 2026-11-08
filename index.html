@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}body{margin:0}</style>
+<title>לוח 100</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Layout: one tear-off calendar sheet centered on an olive field, giant day number on top, quote under it, flip button below */
+:root{
+  --bg:#e6e4d6; --sheet:#fbfaf4; --fg:#23271c; --muted:#646a55;
+  --olive:#4d5a2c; --olive-ink:#f4f2e4; --sand:#c9a65a; --line:#d5d2bf;
+  --display:"Secular One","Assistant",system-ui,sans-serif;
+  --body:"Assistant",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171a12; --sheet:#22261b; --fg:#ecebdf; --muted:#a3a890;
+  --olive:#8a9b52; --olive-ink:#141710; --sand:#d8b86c; --line:#363b2b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171a12; --sheet:#22261b; --fg:#ecebdf; --muted:#a3a890;
+  --olive:#8a9b52; --olive-ink:#141710; --sand:#d8b86c; --line:#363b2b; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:24px;display:flex;flex-direction:column;align-items:center;gap:20px;box-sizing:border-box}
+header{text-align:center;display:grid;gap:2px}
+header .eyebrow{font-size:13px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+header h1{margin:0;font-family:var(--display);font-weight:400;font-size:22px;color:var(--olive)}
+.pad{position:relative;width:100%;max-width:440px}
+.rings{display:flex;justify-content:space-around;padding:0 40px;position:relative;z-index:2;height:14px}
+.rings span{width:12px;height:26px;border-radius:6px;background:var(--fg);opacity:.75;margin-top:-6px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:6px;box-shadow:0 14px 30px -18px rgba(0,0,0,.45),0 2px 0 var(--line),0 5px 0 -1px var(--sheet),0 6px 0 -1px var(--line);
+  overflow:hidden;transform-origin:top center}
+.band{background:var(--olive);color:var(--olive-ink);text-align:center;padding:12px 16px 10px;font-weight:700;letter-spacing:.06em;font-size:14px}
+.num{font-family:var(--display);font-size:clamp(120px,40vw,200px);line-height:1;text-align:center;color:var(--fg);
+  font-variant-numeric:tabular-nums;padding-top:18px}
+.unit{text-align:center;color:var(--muted);font-weight:600;margin-top:-4px;font-size:18px}
+.date{text-align:center;color:var(--muted);font-size:14px;margin-top:4px;font-variant-numeric:tabular-nums}
+.quote{margin:20px 22px 26px;padding-top:18px;border-top:1px dashed var(--line);text-align:center;
+  font-size:21px;line-height:1.5;font-weight:600;text-wrap:balance;min-height:3em}
+.quote small{display:block;margin-top:10px;font-size:13px;color:var(--muted);font-weight:400;letter-spacing:.04em}
+.sheet.tear{animation:tear .45s ease-in forwards}
+.sheet.enter{animation:enter .3s ease-out}
+@keyframes tear{to{transform:translateY(40px) rotate(-7deg);opacity:0}}
+@keyframes enter{from{opacity:.2;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sheet.tear,.sheet.enter{animation:none}}
+.controls{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:440px}
+#flip{width:100%;font-family:var(--display);font-size:26px;padding:14px 20px;border:0;border-radius:10px;
+  background:var(--olive);color:var(--olive-ink);cursor:pointer;box-shadow:0 4px 0 color-mix(in srgb,var(--olive) 60%,#000)}
+#flip:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--olive) 60%,#000)}
+#flip:disabled{opacity:.45;cursor:default;transform:none}
+button:focus-visible{outline:3px solid var(--sand);outline-offset:3px}
+.small{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;font-size:14px;color:var(--muted)}
+.link{background:none;border:0;color:var(--muted);font:inherit;text-decoration:underline;cursor:pointer;padding:4px}
+.confirm{display:flex;gap:8px;align-items:center}
+.confirm button{font:inherit;font-size:14px;border-radius:6px;padding:4px 12px;cursor:pointer;border:1px solid var(--line);background:var(--sheet);color:var(--fg)}
+.confirm .yes{background:var(--sand);border-color:var(--sand);color:#23271c}
+.progress{width:100%;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--sand);width:0;transition:width .4s}
+</style>
+
+</head>
+<body>
+<div dir="rtl" lang="he" style="display:contents">
+<header>
+  <span class="eyebrow">קורס קצינים · שלב גפן · מוטיבציה בגרוש</span>
+  <h1>לוח 100 · יעד 18.2.2027</h1>
+</header>
+
+<div class="pad">
+  <div class="rings" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="sheet" id="sheet">
+    <div class="band" id="band">ספירה לאחור</div>
+    <div class="num" id="num" aria-live="polite">100</div>
+    <div class="unit" id="unit">ימים</div>
+    <div class="date" id="date"></div>
+    <p class="quote" id="quote"></p>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+  <button id="flip" type="button">דפדף</button>
+  <div class="small">
+    <span id="status"></span>
+  </div>
+</div>
+</div>
+
+<script>
+const LINES = [
+"מאה ימים. אפשר לראות את זה כחצי כוס מלאה, או כמאה מסדרים.",
+"תזכורת: התנדבת לזה. מרצונך החופשי. בהכרה מלאה.",
+"העייפות זמנית. גם הדרגות זמניות. רק ההשכמה של 05:00 נצחית.",
+"אתה לא עייף. אתה פשוט במצב ״קצין בהרצה״.",
+"שינה זה למזרונים. אתה צוער.",
+"מבחינה סטטיסטית, שרדת את כל הימים הגרועים שלך עד עכשיו. 100% הצלחה.",
+"״אחריי!״ אמר הקצין, ואז הסתובב לבדוק שבאמת מישהו בא.",
+"אם היה קל, היו קוראים לזה טירונות.",
+"הקפה של הבסיס לא מעיר אותך. הוא רק מאיים עליך.",
+"עוד יום עבר. אף אחד לא ישאל אותך איך היה, אז הנה: כל הכבוד.",
+"המפקד אמר ״חמש דקות״. תתכונן לשעה.",
+"הנעליים שלך מבריקות יותר מהעתיד של כמה אנשים. זה כבר משהו.",
+"מנהיגות היא לדעת מתי לשתוק. בעיקר במסדר.",
+"היום תלמד משהו חדש. כנראה על עצמך, וכנראה שלא תאהב את זה.",
+"תסתכל על הצד החיובי: אתה כבר לא זוכר איך נראה סוף שבוע, אז אין למה להתגעגע.",
+"החלום שלך מתגשם. היה כתוב בו גם ״ניווט לילה בגשם״?",
+"הרגליים כואבות? מצוין. זה אומר שעדיין יש לך רגליים.",
+"מישהו בצוות הולך לאחר היום. תדאג שזה לא אתה.",
+"״זה בונה אופי״ זו הדרך הצבאית להגיד ״אין לנו הסבר״.",
+"קצין טוב יודע לקבל החלטה בעשר שניות. קצין מעולה יודע להסביר אחר כך למה היא הייתה נכונה.",
+"אל תדאג, המוטיבציה תגיע. היא רק נתקעה בש״ג.",
+"החיים קצרים. התדריך לא.",
+"יש שני סוגי צוערים: אלה שמתלוננים, ואלה שמתלוננים בשקט.",
+"תחייך. זה מבלבל את המפקדים.",
+"מים זה החבר הכי טוב שלך. אחרי השק״ש.",
+"ההבדל בין צוער לקצין הוא בערך מאה ימים ושני פסים.",
+"עוד תספר על זה לנכדים. הם ישתעממו, אבל תספר.",
+"מישהו פעם אמר שהצבא זה בית ספר לחיים. הוא לא ציין שאין חופש גדול.",
+"הדבר היחיד שזז מהר יותר מהזמן פה הוא הארוחה בחדר האוכל.",
+"אתה לא מאחר. כולם פשוט הגיעו מוקדם מדי.",
+"דמיין את הטקס. עכשיו תפקח עיניים, יש מסדר.",
+"כל ניווט מסתיים בנקודת סיום. לפעמים גם בנקודה הלא נכונה.",
+"המשקל על הגב זה רק אימון למשקל של האחריות. וגם לגב.",
+"הגוף אומר ״די״. הסגל אומר ״עוד אחד״. נחש מי מנצח.",
+"יום נפלא לעשות דברים שלא היית עושה לבד בחיים.",
+"הצד הטוב בבוקר מוקדם: יש עוד הרבה זמן ליום להשתפר.",
+"סבלנות היא תכונה של קצינים. וגם של מי שמחכה לרכבת ביום ראשון.",
+"לא כל יום הוא יום טוב, אבל כל יום הוא יום פחות.",
+"מבחינה טכנית, אתה כבר יותר קצין ממי שעוד לא התגייס.",
+"אם אתה מרגיש שאתה לא יודע מה אתה עושה, ברוך הבא למנהיגות.",
+"אף אחד לא אמר שיהיה קל. האמת, אף אחד לא אמר כלום, פשוט שלחו אותך.",
+"תשמור על הנשק כמו על הטלפון. תשמור על הטלפון כמו על הנשק. רגע, אל תשמור על הטלפון.",
+"טיפ: אם כולם רצים, תרוץ. שאלות אחר כך.",
+"המדים לא גורמים לך להיראות טוב. אתה גורם להם להיראות סבירים.",
+"״התחלה של סוף״ נשמע מבטיח עד שמבינים שזה עדיין התחלה.",
+"החדשות הטובות: הגעת כמעט לחצי. החדשות הרעות: זה החצי השני.",
+"כמעט חצי הדרך. מכאן זה רק ירידה. רגע, לא, זו עלייה.",
+"היום אתה מנהל את הזמן שלך. סתם, הלו״ז מנהל אותך.",
+"יש אנשים שמשלמים על מחנה הישרדות. אתה מקבל משכורת. בערך.",
+"תאמין בעצמך. אף אחד אחר לא יעשה את זה בשבילך בשבע בבוקר.",
+"הדרך הכי טובה לא להיות עייף היא לא לחשוב על זה. גם לא עובד, אבל ניסינו.",
+"המפקדים שלך עברו את זה ויצאו בסדר. בערך בסדר. תסתכל עליהם שוב.",
+"אחרי גפן, כל דבר אחר בחיים ירגיש כמו ספא.",
+"חצי מהיכולת להוביל זה טון דיבור. החצי השני זה לדעת לאן.",
+"הכנה לשבת מתחילה ביום ראשון בבוקר. בראש.",
+"אתה לא מקלל. אתה מביע רגשות בצורה צבאית.",
+"זכור: עין אחת על המטרה, עין שנייה על הסמל.",
+"מי שלא נרדם בהרצאה, לא באמת ניסה.",
+"הלילה תישן חמש שעות. במונחים צבאיים זה חופשה.",
+"כל מה שלא הורג אותך, מופיע במשוב.",
+"שתייה, שינה, שתייה, שינה. אחד מאלה תצליח לעשות היום.",
+"בהמשך החיים, כשמישהו יגיד לך ״יום קשה בעבודה״, תחייך בנימוס.",
+"הכומתה לא תתייבש מעצמה. גם המצב רוח לא.",
+"הצוות שלך הוא המשפחה שלך. משפחה שמריחה מאבק שריפה.",
+"תהיה הקצין שהחיילים שלך יחקו בערב החווי. עדיף מהצד הטוב.",
+"החורף פה. מה שאומר שהבוץ פה. מה שאומר שאתה פה.",
+"כל שק שינה הוא מלון חמישה כוכבים אם מספיק עייפים.",
+"כשנדמה שאין דרך, תסתכל על המפה שוב. אולי היא הפוכה.",
+"לא סתם קוראים לזה ״קורס״. בסוף נגמר לך הכוח בדיוק כמו בקורס כושר.",
+"אל תספור את הימים. לוח 100 כבר עושה את זה בשבילך.",
+"מצד אחד, נשארו עוד הרבה ימים. מצד שני, כבר אין לך כוח לספור.",
+"החדשות הטובות: יש סוף. החדשות הרעות: יש עוד אמצע.",
+"עוד שבוע עבר. תפנק את עצמך בעוד חמש דקות מקלחת.",
+"תחשוב חיובי. למשל: לפחות זה לא ניווט בודד. היום.",
+"ההורים שלך גאים בך. הם גם ישנים במיטה חמה. ככה זה.",
+"מישהו פעם אמר ״תהנה מהדרך״. כנראה הוא לא הלך אותה עם אפוד.",
+"אם הצלחת לקום היום, עשית את החלק הכי קשה. השאר זה רק כל השאר.",
+"שלושה דברים בטוחים בחיים: מוות, מסים, ו״עוד חמש דקות״ של הסגל.",
+"פחות מחודש. כבר אפשר להתחיל לתכנן מה תאכל ביום הראשון בחוץ.",
+"אל תוריד הילוך עכשיו. לא שיש לך עוד הילוכים, אבל בכל זאת.",
+"יש אור בקצה המנהרה. מקווים שזה לא פנס של הסגל בבדיקת לילה.",
+"אתה כבר רואה את קו הסיום? יופי. הוא עדיין רחוק.",
+"מי שמוביל בלב לא צריך להרים את הקול. אבל זה עוזר במסדר.",
+"כל יום שנשאר הוא עוד יום שתספר עליו כאילו היה קל.",
+"התחלת את זה עם פחד. אתה מסיים את זה עם פחד ממשהו אחר לגמרי.",
+"תסתכל אחורה על הדרך שעשית. עכשיו תסתכל קדימה, יש מכשול.",
+"הישורת האחרונה. זה הזמן להיות במיטבך, או לפחות לא במיטה.",
+"עוד קצת וזה נגמר. ואז מתחיל הקורס הבא. אבל אל תחשוב על זה.",
+"מספר חד־ספרתי בפתח. אפשר כבר לנשום. בשקט, שלא ישמעו.",
+"המספר הדו־ספרתי האחרון. מכאן זה ספירה על האצבעות.",
+"מי שהגיע עד כאן, יגיע עד הסוף. גם אם בזחילה.",
+"שבוע אחרון. אל תעשה עכשיו שום דבר טיפשי. שום דבר.",
+"תודה לצוות, תודה לסגל, ותודה לגרביים היבשים האחרונים שנשארו לך.",
+"עכשיו כבר אפשר לספור על יד אחת. אם עוד יש לך כוח להרים אותה.",
+"אתה כבר מרגיש את זה? לא, זה לא הסוף, זו פשוט שלפוחית.",
+"נשימה עמוקה. עוד קצת. ועוד מסדר אחד.",
+"כל מה שעשית הוביל לרגע הזה. כולל השינה בהרצאה ההיא.",
+"מחר כולם יראו את מה שאתה כבר יודע: ששרדת.",
+"הלילה האחרון של הספירה. נסה לישון. סתם, אף אחד לא ישן בלילה כזה.",
+"הגעת. שלב גפן מאחוריך. עכשיו אפשר להתלונן בגאווה. אחריי!"
+];
+const START_LINE = "100 ימים לסיום שלב גפן. מכאן זה רק ירידה. סתם, זה בעיקר עליות.";
+const TARGET = new Date(2027,1,18);
+const DAY = 86400000;
+const $ = id => document.getElementById(id);
+function fmt(d){ return d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear(); }
+function today(){ const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+function daysLeft(){ return Math.round((TARGET-today())/DAY); }
+
+let extra = 0; // how many extra sentences were flipped today (not saved, resets on reload)
+let shownDay = null;
+
+function render(){
+  const real = daysLeft();
+  const count = Math.max(0, Math.min(100, real));
+  if(shownDay!==count){ shownDay=count; extra=0; }
+  $("num").textContent = count;
+  if(count===0){
+    $("band").textContent = real<0 ? "סיימת את שלב גפן" : "יום הסיום";
+    $("unit").textContent = "הגעת!";
+  }else{
+    $("band").textContent = real>100 ? "הלוח נפתח ב־"+fmt(new Date(TARGET-100*DAY)) : "ספירה לאחור";
+    $("unit").textContent = count===1 ? "יום אחד" : "ימים";
+  }
+  $("date").textContent = real>100
+    ? "עוד "+real+" ימים ליעד · "+fmt(TARGET)
+    : "היום "+fmt(today())+" · יעד "+fmt(TARGET);
+  // sentence of the day: 100 -> start line, 99 -> LINES[0] ... 0 -> LINES[99]
+  const base = 100-count; // 0..100
+  const idx = (base + extra) % 101;
+  const line = idx===0 ? START_LINE : LINES[idx-1];
+  $("quote").innerHTML = "";
+  $("quote").append(line);
+  const s=document.createElement("small");
+  s.textContent = extra===0 ? "המשפט של היום" : "משפט נוסף לדרך";
+  $("quote").append(s);
+  $("bar").style.width = (100-count)+"%";
+  $("status").textContent = "הספירה מתעדכנת אוטומטית כל לילה בחצות. ״דפדף״ נותן עוד משפט.";
+}
+
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animate(update){
+  const sh = $("sheet");
+  if(reduce){ update(); return; }
+  sh.classList.remove("enter"); sh.classList.add("tear");
+  setTimeout(()=>{ update(); sh.classList.remove("tear"); void sh.offsetWidth; sh.classList.add("enter"); },430);
+}
+
+let busy=false;
+$("flip").addEventListener("click",()=>{
+  if(busy) return; busy=true;
+  animate(()=>{ extra++; render(); busy=false; });
+});
+
+// refresh right after midnight if the page stays open, and when coming back to the tab
+function scheduleMidnight(){
+  const n=new Date(); const next=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,0,0,2);
+  setTimeout(()=>{ animate(render); scheduleMidnight(); }, next-n);
+}
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && daysLeft()!==shownDay) render(); });
+render(); scheduleMidnight();
+</script>
+</body>
+</html>
